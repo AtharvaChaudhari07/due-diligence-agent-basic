@@ -44,8 +44,8 @@ After planning, LangGraph fans out the shared state to four research nodes:
             ▼              ▼              ▼              ▼
        Financial         News       Competitive        Risk
         Research       Research      Research         Research
-
-        
+```
+    
 ### 3. Web Search and Evidence Collection
 Each research node creates search queries relevant to its area and retrieves web results. The current implementation uses a combination of:
 
@@ -66,28 +66,69 @@ Risk Research        →   RiskAssessment
 These structured results are converted into standardized findings containing information such as:
 
 Finding
-
 Category
-
 Severity & Confidence
-
 Supporting sources
-
 Verification status
-
 The findings are then written back into the shared LangGraph state.
 
 ### 5. Final Synthesis
 The verified findings, original research findings, and detected contradictions are passed to the Final Synthesis node. Gemini then consolidates the information into an executive assessment containing:
 
 Overall verdict & Risk rating
-
 Confidence level
-
 Key strengths & Key risks
-
 Recommendation & Recommended next steps
-
 Fact-check summary
-
 Detected contradictions
+
+### Complete Flow
+```
+Company + Research Objective
+            │
+            ▼
+┌──────────────────────────┐
+│    Research Planning     │
+│      Gemini + Schema     │
+└────────────┬─────────────┘
+             │
+             ▼
+      Focused Subtasks
+             │
+             ▼
+      ┌──────┴──────┐
+      │   LangGraph │
+      │   Fan-Out   │
+      └──────┬──────┘
+             │
+    ┌────────┼────────┬────────┐
+    ▼        ▼        ▼        ▼
+ Financial  News   Competitive  Risk
+   Node     Node       Node      Node
+    │        │          │        │
+    └────────┼──────────┼────────┘
+             │
+             ▼
+      Web Search Results
+             │
+             ▼
+       Gemini Analysis
+             │
+             ▼
+      Structured Findings
+             │
+             ▼
+       Shared State
+             │
+             ▼
+       Fact Checking
+             │
+             ▼
+    Verification Results
+             │
+             ▼
+       Final Synthesis
+             │
+             ▼
+     Executive Assessment
+```
